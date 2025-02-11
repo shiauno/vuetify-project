@@ -1,13 +1,13 @@
 // Utilities
 import { defineStore } from 'pinia'
-import { computed, ref } from 'vue'
+import { ref, computed } from 'vue'
 import UserRole from '@/enums/UserRole'
 
-
 export const useUserStore = defineStore('user', () => {
+
   const token = ref('')
   const account = ref('')
-  const role = ref()
+  const role = ref(UserRole.USER)
 
   const isLoggedIn = computed(() => {
     return token.value.length > 0
@@ -17,7 +17,11 @@ export const useUserStore = defineStore('user', () => {
     return role.value === UserRole.ADMIN
   })
 
-  const login = async (data) => {
+  const avatar = computed(() => {
+    return `https://api.multiavatar.com/${account.value}.png`
+  })
+
+  const login = (data) => {
     if (data.token) {
       token.value = data.token
     }
@@ -33,11 +37,12 @@ export const useUserStore = defineStore('user', () => {
 
   return {
     token, account, role,
-    isLoggedIn, isAdmin, login, logout
+    isLoggedIn, isAdmin, avatar,
+    login, logout
   }
 }, {
   persist: {
-    key:'record-user',
-    pick:['token']
+    key: 'record-user',
+    pick: ['token']
   }
 })
