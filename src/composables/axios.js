@@ -15,18 +15,22 @@ apiAuth.interceptors.request.use(config => {
   return config
 })
 
-apiAuth.interceptors.response(res => res, async error => {
+apiAuth.interceptors.response.use(res => res, async error => {
   if (error.response) {
     if (error.response.data.message === '登入過期' && error.config.url !== '/user/refresh') {
       const user = useUserStore()
       try {
         const { data } = await apiAuth.patch('/user/refresh')
         user.token = data.result
+        error.config.headers.Authorization = 'Bearer ' + user.token
+        return axios(error.config)
       } catch (error) {
         console.log(error)
+        user.logout()
       }
     }
   }
+  return Promise.reject(error)
 })
 
 export const useAxios = () => {
