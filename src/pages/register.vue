@@ -121,3 +121,8 @@ const submit = handleSubmit(async (values) => {
   }
 })
 </script>
+
+<route lang="yaml">
+meta:
+  title: '註冊'
+</route>

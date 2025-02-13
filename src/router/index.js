@@ -29,7 +29,20 @@ router.beforeEach(async (to, from, next) => {
       user.logout()
     }
   }
-  next()
+
+  if(user.isLoggedIn && ['/login', '/register'].includes(to.path)){
+    next('/')
+  }else if (to.meta.login && !user.isLoggedIn) {
+    next('/login')
+  } else if (to.meta.admin && !user.isAdmin) {
+    next('/')
+  } else {
+      next()
+  }
+})
+
+router.afterEach((to) => {
+  document.title = to.meta.title
 })
 
 // Workaround for https://github.com/vitejs/vite/issues/11804

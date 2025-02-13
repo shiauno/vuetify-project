@@ -44,3 +44,10 @@
     },
   }
 </script>
+
+<route lang="yaml">
+meta:
+  login: false
+  admin: false
+  title: '首頁'
+</route>

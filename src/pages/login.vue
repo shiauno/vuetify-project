@@ -96,3 +96,8 @@ const submit = handleSubmit(async (values) => {
   }
 })
 </script>
+
+<route lang="yaml">
+meta:
+  title: '登入'
+</route>
