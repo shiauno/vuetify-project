@@ -6,40 +6,23 @@
     hide-delimiter-background
   >
     <v-carousel-item
-      v-for="(slide, i) in slides"
+    v-for="(item,i) in items"
       :key="i"
+      :src="item.src"
+      cover
     >
-      <v-sheet
-        :color="colors[i]"
-        height="100%"
-      >
-        <div class="d-flex fill-height justify-center align-center">
-          <div class="text-h2">
-            {{ slide }} Slide
-          </div>
-        </div>
-      </v-sheet>
     </v-carousel-item>
   </v-carousel>
 </template>
+
 <script>
   export default {
     data () {
       return {
-        colors: [
-          'indigo',
-          'warning',
-          'pink darken-2',
-          'red lighten-1',
-          'deep-purple accent-4',
-        ],
-        slides: [
-          'First',
-          'Second',
-          'Third',
-          'Fourth',
-          'Fifth',
-        ],
+        items: [
+          { src: 'https://images.pexels.com/photos/1640777/pexels-photo-1640777.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'},
+          { src: 'https://images.pexels.com/photos/1092730/pexels-photo-1092730.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'},
+        ]
       }
     },
   }

@@ -9,7 +9,7 @@
         <v-data-table :items="foods" :headers="headers" :search="search">
           <template #top>
             <v-toolbar>
-              <v-btn>新增商品</v-btn>
+              <v-btn @click="openDialog(null)">新增商品</v-btn>
               <v-spacer></v-spacer>
               <v-text-field v-model="search" prepend-inner-icon="mdi-magnify" variant="underlined" max-width="400"></v-text-field>
             </v-toolbar>
@@ -23,12 +23,15 @@
           <template #[`item.updatedAt`]="{ value }">
             {{ new Date(value).toLocaleString() }}
           </template>
+          <template #[`item.edit`]="{ item }">
+            <v-btn icon="mdi-pencil" variant="text" @click="openDialog(item)"></v-btn>
+          </template>
         </v-data-table>
       </v-col>
     </v-row>
   </v-container>
   <v-dialog v-model="dialog.open" persistent>
-    <v-form>
+    <v-form :disabled="isSubmitting" @submit.prevent="submit">
       <v-card>
         <v-card-title>{{ dialog.id? '編輯食物' : '新增食物' }}</v-card-title>
         <v-card-text >
@@ -93,9 +96,19 @@
             :error-messages="cholesterol.errorMessage.value"
             type="number" min="0"
           ></v-text-field>
+          <vue-file-agent
+            ref="fileAgent"
+            v-model="fileRecords" v-model:raw-model-value="rawFileRecords"
+            accept="image/jpeg,image/png"
+            deletable
+            max-size="1MB"
+            :help-text="'點擊或拖曳檔案至此'"
+            :error-text="{type: '檔案類型錯誤', size: '檔案大小超過限制'}"
+          ></vue-file-agent>
         </v-card-text>
         <v-card-actions>
-
+          <v-btn @click="closeDialog">取消</v-btn>
+          <v-btn type="submit" :loading="isSubmitting">確認</v-btn>
         </v-card-actions>
       </v-card>
     </v-form>
@@ -129,6 +142,7 @@ const headers =[
     { title: '膽固醇(mg)', key: 'cholesterol', sortable: true },
     { title: '新增時間', key: 'createdAt', sortable: true },
     { title: '更新時間', key: 'updatedAt', sortable: true},
+    { title: '編輯食物', key: 'edit', sortable: false},
 ]
 
 const getFoods = async () => {
@@ -148,9 +162,33 @@ const getFoods = async () => {
 getFoods()
 
 const dialog = ref({
-  open: true,
+  open: false,
   id: ''
 })
+const openDialog = (item) => {
+  if (item) {
+    dialog.value.id = item._id
+    name.value.value = item.name
+    category.value.value = item.category
+    calorie.value.value = item.calorie
+    moisture.value.value = item.moisture
+    protein.value.value = item.protein
+    fat.value.value = item.fat
+    carbo.value.value = item.carbo
+    sodium.value.value = item.sodium
+    fibre.value.value = item.fibre
+    cholesterol.value.value = item.cholesterol
+  }
+  dialog.value.open = true
+
+}
+
+const closeDialog = () => {
+  resetForm()
+  dialog.value.id = ''
+  dialog.value.open = false
+  fileAgent.value.deleteFileRecord()
+}
 
 const schema = yup.object({
   name: yup
@@ -158,34 +196,42 @@ const schema = yup.object({
     .required('食物名稱必填'),
   calorie: yup
     .number()
+    .typeError('輸入的值必為數字')
     .required('食物熱量必填')
     .min(0, '食物熱量不可為負數'),
   moisture: yup
     .number()
+    .typeError('輸入的值必為數字')
     .required('食物水分必填')
     .min(0, '食物水分不可為負數'),
   protein: yup
     .number()
+    .typeError('輸入的值必為數字')
     .required('食物蛋白質必填')
     .min(0, '食物蛋白質不可為負數'),
   fat: yup
     .number()
+    .typeError('輸入的值必為數字')
     .required('食物脂肪必填')
     .min(0, '食物脂肪不可為負數'),
   carbo: yup
     .number()
+    .typeError('輸入的值必為數字')
     .required('食物碳水必填')
     .min(0, '食物碳水不可為負數'),
   sodium: yup
     .number()
+    .typeError('輸入的值必為數字')
     .required('食物鈉必填')
     .min(0, '食物鈉不可為負數'),
   fibre: yup
     .number()
+    .typeError('輸入的值必為數字')
     .required('食物纖維必填')
     .min(0, '食物纖維不可為負數'),
   cholesterol: yup
     .number()
+    .typeError('輸入的值必為數字')
     .required('食物膽固醇必填')
     .min(0, '食物膽固醇不可為負數'),
   category: yup
@@ -209,8 +255,20 @@ const schema = yup.object({
           '其他類',
         ], '食物分類不符'),
 })
-const { handleSubmit, isSubmitting } = useForm({
-  validationSchema: schema
+const { handleSubmit, isSubmitting, resetForm } = useForm({
+  validationSchema: schema,
+  initialValues: {
+    name: '',
+    category: '',
+    calorie: 0,
+    moisture: 0,
+    protein: 0,
+    fat: 0,
+    carbo: 0,
+    sodium: 0,
+    fibre: 0,
+    cholesterol: 0
+  }
 })
 const name = useField('name')
 const calorie = useField('calorie')
@@ -237,9 +295,60 @@ const categoryOptions = [
   { text: '水果類', value: '水果類' },
   { text: '乳品類', value: '乳品類' },
   { text: '調味料及辛香料類', value: '調味料及辛香料類' },
-  { text: '其他類', value: '其他類' },
-]
+  { text: '其他類', value: '其他類' },]
 
+const fileAgent = ref([null])
+const fileRecords = ref([])
+const rawFileRecords = ref([])
+
+const submit = handleSubmit(async (values) => {
+  if (fileRecords.value[0]?.error)  return
+  if (dialog.value.id.length === 0 && fileRecords.value.length === 0) {
+    createSnackbar({
+      text: '圖片必填',
+      snackbarProps: {
+        color: 'red'
+      }
+    })
+    return
+  }
+
+  try {
+    const fd = new FormData()
+    fd.append('name', values.name)
+    fd.append('category', values.category)
+    fd.append('calorie', values.calorie)
+    fd.append('moisture', values.moisture)
+    fd.append('protein', values.protein)
+    fd.append('fat', values.fat)
+    fd.append('carbo', values.carbo)
+    fd.append('sodium', values.sodium)
+    fd.append('fibre', values.fibre)
+    fd.append('cholesterol', values.cholesterol)
+
+    if (fileRecords.value.length > 0) {
+      fd.append('image',fileRecords.value[0].file)
+    }
+
+    if (dialog.value.id.length > 0) {
+      await apiAuth.patch('/food/' + dialog.value.id, fd)
+    } else {
+      await apiAuth.post('/food', fd)
+    }
+
+    foods.splice(0, foods.length)
+    getFoods()
+    createSnackbar({
+      text: dialog.value.length > 0? '編輯成功' : '新增成功',
+      snackbarProps: {
+        color: 'success'
+      }
+    })
+    closeDialog()
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 </script>
 
