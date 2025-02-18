@@ -21,7 +21,7 @@ const user = useUserStore()
 
 const navs = computed(() => {
   return [
-    { to: '/admin/Foods', text: "食物", icon: 'mdi-food-drumstick' },
+    { to: '/admin/Foods', text: "食物管理", icon: 'mdi-food-drumstick' },
     { to: '/', text: '首頁', icon: 'mdi-home'}
   ]
 })

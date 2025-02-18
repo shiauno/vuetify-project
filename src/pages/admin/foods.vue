@@ -180,7 +180,6 @@ const openDialog = (item) => {
     cholesterol.value.value = item.cholesterol
   }
   dialog.value.open = true
-
 }
 
 const closeDialog = () => {
@@ -333,7 +332,8 @@ const submit = handleSubmit(async (values) => {
     if (dialog.value.id.length > 0) {
       await apiAuth.patch('/food/' + dialog.value.id, fd)
     } else {
-      await apiAuth.post('/food', fd)
+      const {data} = await apiAuth.post('/food', fd)
+      console.log(data)
     }
 
     foods.splice(0, foods.length)

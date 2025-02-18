@@ -1,5 +1,5 @@
 <template>
-    <v-container style="background-color: #DCF0F5; color: black;">
+    <v-container>
     <v-row>
       <v-col cols="12">
         <h1 class="text-center">登入</h1>

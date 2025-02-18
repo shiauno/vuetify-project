@@ -1,7 +1,7 @@
 <template>
   <v-app-bar style="background-color: #495F41;">
     <v-container class="d-flex align-center">
-      <v-btn to="/">專題題目</v-btn>
+      <v-btn to="/">食兼管理</v-btn>
       <v-spacer></v-spacer>
       <v-btn v-for="nav in navm" :key="nav.to" :to="nav.to" :prepend-icon="nav.icon">{{ nav.text }}</v-btn>
       <v-spacer />
@@ -11,7 +11,7 @@
       <v-btn v-if="user.isLoggedIn" prepend-icon="mdi-logout" @click="logout">登出</v-btn>
     </v-container>
   </v-app-bar>
-  <v-main>
+  <v-main style="background-color: #DCF0F5; color: black;">
     <router-view></router-view>
   </v-main>
 </template>
