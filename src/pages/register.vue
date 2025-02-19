@@ -5,7 +5,7 @@
         <h1 class="text-center">註冊</h1>
       </v-col>
       <v-divider></v-divider>
-      <v-col cols="12">
+      <v-col cols="6" class="mx-auto">
         <v-form :disabled="isSubmitting" @submit.prevent="submit">
           <v-text-field
             v-model="account.value.value"
