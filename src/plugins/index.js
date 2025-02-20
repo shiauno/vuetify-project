@@ -10,20 +10,22 @@ import pinia from '@/stores'
 import router from '@/router'
 import VuetifyUseDialog from 'vuetify-use-dialog'
 import VueFileAgentNext from '@boindil/vue-file-agent-next'
+import VueApexCharts from "vue3-apexcharts";
 import '@boindil/vue-file-agent-next/dist/vue-file-agent-next.css'
 
 export function registerPlugins (app) {
   app
-    .use(vuetify)
-    .use(VuetifyUseDialog, {
-      snackbar: {
-        showCloseButton: false,
-        snackbarPoprs: {
-          timeout: 2000
+  .use(vuetify)
+  .use(VuetifyUseDialog, {
+    snackbar: {
+      showCloseButton: false,
+      snackbarPoprs: {
+        timeout: 2000
         }
       }
     })
     .use(router)
     .use(pinia)
     .use(VueFileAgentNext)
+    .use(VueApexCharts)
 }

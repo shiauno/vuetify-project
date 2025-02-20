@@ -2,15 +2,17 @@
   <v-container>
     <h1>個人資料</h1>
     <v-row>
-      <v-col cols="12">
-        帳號: {{ profile.account }}
-      </v-col>
-      <v-col cols="12">
-        信箱: {{ profile.email }}
-      </v-col>
-      <v-col cols="12">
-        體重: {{ profile.weight }}
-      </v-col>
+      <v-avatar>
+        <template v-if="profile.avatar">
+          <img :src="profile.avatar" />
+        </template>
+        <template v-else>
+          <img :src="require('@/assets/computer_programming_man.png')" />
+        </template>
+      </v-avatar>
+      <v-col cols="12"> 帳號: {{ profile.account }}</v-col>
+      <v-col cols="12">信箱: {{ profile.email }}</v-col>
+      <v-col cols="12">體重: {{ profile.weight }} 公斤</v-col>
     </v-row>
   </v-container>
 </template>

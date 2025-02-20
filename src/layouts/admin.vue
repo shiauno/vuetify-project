@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer permanent>
     <v-list>
-      <v-list-item :prepend-avatar="user.avatar" :title="user.account"></v-list-item>
+      <v-list-item :prepend-avatar="user.avatar || defaultAvatar" :title="user.account"></v-list-item>
     </v-list>
     <v-divider></v-divider>
     <v-list>
@@ -16,6 +16,7 @@
 <script setup>
 import { computed } from 'vue';
 import { useUserStore } from '@/stores/user';
+import defaultAvatar from '@/assets/computer_programming_man.png'
 
 const user = useUserStore()
 

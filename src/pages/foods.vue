@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1>熱量查詢</h1><br>
     <v-row>
       <v-col cols="12">
         <v-text-field v-model="search" prepend-icon="mdi-magnify"></v-text-field>
