@@ -1,8 +1,6 @@
 <template>
   <v-container>
-    <h1>飲食紀錄</h1>
-    
-
+    <h1>飲食紀錄</h1><br>
     <v-expansion-panels class="my-4" variant="popout" color="#89BE99" bg-color="white">
 
       <v-expansion-panel >

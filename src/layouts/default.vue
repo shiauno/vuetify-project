@@ -14,10 +14,23 @@
   <v-main style="background-color: #DCF0F5; color: black;">
     <router-view></router-view>
   </v-main>
+  <v-footer color="#495f41" class="text-center d-flex flex-column" style="max-height: 140px;">
+    <div>
+      <v-btn
+        v-for="icon in icons"
+        :key="icon"
+        :icon="icon"
+        class="mx-4"
+        variant="text"
+      ></v-btn>
+    </div>
+    <v-divider></v-divider>
+    2025 &copy; 我不知道
+  </v-footer>
 </template>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useAxios } from '@/composables/axios';
 import { useSnackbar } from 'vuetify-use-dialog';
@@ -56,5 +69,12 @@ const logout = async () => {
     }
   })
 }
+
+const icons = ref(
+  [
+    'mdi-facebook',
+    'mdi-twitter',
+    'mdi-instagram',
+])
 
 </script>
