@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container  max-width="1600">
     <h1 style="margin-bottom: 20px;">個人資料</h1>
     <div class="d-flex text-center">
       <v-row >

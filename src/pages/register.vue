@@ -1,5 +1,5 @@
 <template>
-    <v-container>
+    <v-container  max-width="1600">
     <v-row>
       <v-col cols="12">
         <h1 class="text-center">註冊</h1>

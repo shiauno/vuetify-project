@@ -25,7 +25,7 @@
       ></v-btn>
     </div>
     <v-divider></v-divider>
-    2025 &copy; 我不知道
+    2025 &copy; 泰山職業訓練場-學員陳筱媃
   </v-footer>
 </template>
 
@@ -43,7 +43,6 @@ const navs = computed(() => {
   return [
     { to: '/login', text: '登入', icon: 'mdi-login',show: !user.isLoggedIn},
     { to: '/register', text: '註冊', icon: 'mdi-account-plus', show: !user.isLoggedIn },
-    { to: '/profile', text: '個人資料', icon: 'mdi-account', show: user.isLoggedIn },
     { to: '/admin', text: '管理', icon: 'mdi-cog', show: user.isLoggedIn && user.isAdmin }
   ]
 })
@@ -51,7 +50,8 @@ const navs = computed(() => {
 const navm = computed(() => {
   return [
     { to: '/foods', text: '熱量查詢', icon: 'mdi-food-drumstick'},
-    { to: '/record', text: '飲食紀錄', icon: 'mdi-book-open-variant'},
+    { to: '/record', text: '飲食紀錄', icon: 'mdi-book-open-variant' },
+    { to: '/profile', text: '個人資料', icon: 'mdi-account'},
   ]
 })
 

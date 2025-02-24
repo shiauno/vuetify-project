@@ -1,21 +1,23 @@
 <template>
-  <v-container  max-width="1600">
-    <h1>熱量查詢</h1><br>
-    <v-row>
-      <v-col cols="12">
-        <v-text-field v-model="search" prepend-icon="mdi-magnify"></v-text-field>
-      </v-col>
-      <v-col cols="12">
-        <div style="color: red;">以下為食物每100克的含量</div>
-      </v-col>
-      <v-col v-for="food of filteredFood" :key="food._id" cols="12" md="6" lg="3">
-        <food-card v-bind="food"></food-card>
-      </v-col>
-      <v-col cols="12">
-        <v-pagination v-model="currentPage" :length="totalPage"></v-pagination>
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-item-group multiple>
+    <v-container max-width="1600">
+      <h1>新增飲食紀錄</h1><br>
+      <v-row>
+        <v-col cols="12">
+          <v-text-field v-model="search" prepend-icon="mdi-magnify"></v-text-field>
+        </v-col>
+        <v-col cols="12">
+          <div style="color: red;">以下為食物每100克的含量</div>
+        </v-col>
+        <v-col v-for="food of filteredFood" :key="food._id" cols="12" md="6" lg="3">
+          <food-card v-bind="food"></food-card>
+        </v-col>
+        <v-col cols="12">
+          <v-pagination v-model="currentPage" :length="totalPage"></v-pagination>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-item-group>
 </template>
 
 <script setup>
@@ -46,6 +48,7 @@ const getFoods = async () => {
   }
 }
 getFoods()
+
 </script>
 
 <route lang="yaml">
