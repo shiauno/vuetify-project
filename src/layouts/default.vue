@@ -8,7 +8,7 @@
       <template v-for="nav of navs" :key="nav.to">
         <v-btn v-if="nav.show" :to="nav.to" :prepend-icon="nav.icon" >{{ nav.text }}</v-btn>
       </template>
-      <v-btn v-if="user.isLoggedIn" prepend-icon="mdi-logout" @click="logout">登出</v-btn>
+      <v-btn v-if="user.isLoggedIn" prepend-icon="mdi-logout" :to="!isLoggedIn ? '/' : undefined" @click="logout">登出</v-btn>
     </v-container>
   </v-app-bar>
   <v-main style="background-color: #DCF0F5; color: black;">

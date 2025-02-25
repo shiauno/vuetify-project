@@ -15,7 +15,7 @@
     />
       </div>
       <div>
-        <v-btn icon="mdi-plus" style="margin-right: 0px;" color="#495F41" to="/test"></v-btn>
+        <v-btn icon="mdi-plus" style="margin-right: 0px;" color="#495F41" to="/addrecord"></v-btn>
       </div>
 
 
