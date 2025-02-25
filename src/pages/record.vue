@@ -8,7 +8,6 @@
       v-model="date"
       variant="outlined"
       label="選擇日期"
-      clearable
       prepend-icon="mdi-calendar"
       color="#89BE99"
       :allowed-dates="allowedDates"

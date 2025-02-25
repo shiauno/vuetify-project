@@ -15,24 +15,25 @@
     </div>
 
   </v-container>
-  <v-dialog v-model="dialog.open" persistent max-width="600">
+  <v-dialog v-model="dialog.open" persistent  max-width="600">
     <v-form :disabled="isSubmitting" @submit.prevent="submit">
       <v-card>
         <v-card-title>編輯個人資料</v-card-title>
         <v-card-text>
           <v-text-field
-          v-model="profile.account"
+          v-model="tempProfile.account"
           label="帳號"
           disabled
         ></v-text-field>
         <v-text-field
-          v-model="profile.email"
+          v-model="tempProfile.email"
           label="信箱"
           disabled
         ></v-text-field>
         <v-text-field
-          v-model="profile.weight"
+          v-model="tempProfile.weight"
           label="體重"
+          type="number"
         ></v-text-field>
         </v-card-text>
         <v-card-actions>
@@ -47,10 +48,12 @@
 <script setup>
 import { ref } from 'vue'
 import { useAxios } from '@/composables/axios';
+import { useSnackbar } from 'vuetify-use-dialog';
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup'
 
 const { apiAuth } = useAxios()
+const createSnackbar = useSnackbar()
 
 const profile = ref({
   account: '',
@@ -64,11 +67,25 @@ const getProfile = async () => {
     const { data } = await apiAuth.get('/user/profile')
     console.log(data.result)
     profile.value = data.result
+    tempProfile.value = {...data.result}
   } catch (error) {
     console.log(error)
+    createSnackbar({
+      text: error?.response?.data?.message || '未知錯誤',
+      snackbarProps: {
+        color: 'red'
+      }
+    })
   }
 }
 getProfile()
+
+const tempProfile = ref({
+  account: '',
+  email: '',
+  avatar: '',
+  weight: 0,
+})
 
 const dialog = ref({
   open: false,
@@ -91,15 +108,38 @@ const schema = yup.object({
 })
 const { handleSubmit, isSubmitting } = useForm({
   validationSchema: schema,
+  initialValues: { weight: profile.value.weight }
 })
 const weight = useField('weight')
 
+
 const submit = handleSubmit(async (values) => {
+  console.log('Submit triggered', values)
   try {
+    isSubmitting.value = true
+
     const fd = new FormData()
+
     fd.append('weight', values.weight)
+
+    await apiAuth.patch('/user/edit', fd)
+
+    profile.value.weight = values.weight
+    createSnackbar({
+      text: '編輯成功',
+      snackbarProps: {
+        color: 'success'
+      }
+    })
+    closeDialog()
   } catch (error) {
     console.log(error)
+    createSnackbar({
+      text: error?.response?.data?.message || '編輯失敗，請稍後再試',
+      snackbarProps: {
+        color: 'red'
+      }
+    })
   }
 })
 
