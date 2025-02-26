@@ -1,15 +1,15 @@
 <template>
-  <v-container  max-width="1600">
+  <v-container  max-md-width="1600">
     <h1 style="margin-bottom: 20px;">個人資料</h1>
-      <div class="d-flex text-center mx-auto" style="max-width: 1000px; margin-top: 50px;">
-        <v-row >
-        <v-avatar size="200" style="border: 1px solid black; margin-top: 10px;" color="#89BE99"><v-img :src="profile.avatar"></v-img></v-avatar>
+      <div class="d-md-flex text-center mx-auto" style="max-width: 1000px; margin-top: 50px;">
+        <v-row>
+        <v-avatar size="200" style="border: 1px solid black; margin-top: 10px; display: inline-block;" color="#89BE99"><v-img :src="profile.avatar"></v-img></v-avatar>
       </v-row>
       <v-row>
-        <v-col cols="8" style="font-size: 20px;">帳號: {{ profile.account }}</v-col>
-        <v-col cols="8" style="font-size: 20px;">信箱: {{ profile.email }}</v-col>
-        <v-col cols="8" style="font-size: 20px;">體重: {{ profile.weight }} 公斤</v-col>
-        <v-col cols="8" style="font-size: 20px;">基本所需的熱量: {{ profile.weight * 30 }} kcal</v-col>
+        <v-col cols="12" style="font-size: 20px;">帳號: {{ profile.account }}</v-col>
+        <v-col cols="12" style="font-size: 20px;">信箱: {{ profile.email }}</v-col>
+        <v-col cols="12" style="font-size: 20px;">體重: {{ profile.weight }} 公斤</v-col>
+        <v-col cols="12" style="font-size: 20px;">基本所需的熱量: {{ profile.weight * 30 }} kcal</v-col>
       </v-row>
       <v-btn icon="mdi-pencil" color="#495F41" @click="openDialog()"></v-btn>
       </div>

@@ -68,13 +68,20 @@ import { VDateInput } from 'vuetify/labs/components';
 
 
 const date = ref(new Date())
+const today = new Date()
+
 const allowedDates = (val) => {
-  const today = new Date()
-
   const selectedDate = new Date(val)
-
   return selectedDate <= today
 }
+
+const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1))
+
+const weekDates = Array.from({ length: 7 }, (_, i) => {
+  const date = new Date(startOfWeek)
+  date.setDate(startOfWeek.getDate() + i)
+  return date.toLocaleDateString()
+})
 
 const headers = [
   { title: '圖片', key: 'image', sortable: false},
@@ -90,14 +97,14 @@ const chartOptions = ref({
     },
   },
   xaxis: {
-    categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997],
+    categories:weekDates,
   },
 });
 
 const series = ref([
   {
     name: "今日攝取的熱量",
-    data: [30, 40, 35, 50, 49, 60, 70],
+    data: [18, 40, 35, 50, 49],
     type: 'bar',
     color: '#495F41'
   }, {
