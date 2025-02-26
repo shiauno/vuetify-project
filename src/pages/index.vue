@@ -14,7 +14,7 @@
     </v-carousel-item>
   </v-carousel>
   <v-container  max-width="1600">
-    <v-img src="https://cdn.blog.health2sync.com/wp-content/uploads/2021/07/23151655/j7irES8.png.webp" width="700" class="img"></v-img>
+    <!-- <v-img src="https://cdn.blog.health2sync.com/wp-content/uploads/2021/07/23151655/j7irES8.png.webp" width="700" class="img"></v-img> -->
 
   </v-container>
 </template>
@@ -33,7 +33,7 @@
   }
 </script>
 
-<style>
+<style scoped>
   .img{
     margin-top: 150px;
     margin-bottom: 50px;

@@ -14,7 +14,7 @@
   <v-main style="background-color: #DCF0F5; color: black;">
     <router-view></router-view>
   </v-main>
-  <v-footer color="#495f41" class="text-center d-flex flex-column" style="max-height: 140px;">
+  <v-footer color="#495f41" class="text-center d-flex flex-column" style="max-height: 90px;">
     <div>
       <v-btn
         v-for="icon in icons"

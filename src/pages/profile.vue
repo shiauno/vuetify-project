@@ -1,18 +1,19 @@
 <template>
   <v-container  max-width="1600">
     <h1 style="margin-bottom: 20px;">個人資料</h1>
-    <div class="d-flex text-center">
-      <v-row >
-      <v-avatar size="200" style="border: 1px solid black; margin-top: 10px;" color="#89BE99"><v-img :src="profile.avatar"></v-img></v-avatar>
-    </v-row>
-    <v-row>
-      <v-col cols="8" style="font-size: 20px;">帳號: {{ profile.account }}</v-col>
-      <v-col cols="8" style="font-size: 20px;">信箱: {{ profile.email }}</v-col>
-      <v-col :key="weight" cols="8" style="font-size: 20px;">體重: {{ profile.weight }} 公斤</v-col>
-      <v-col cols="8" style="font-size: 20px;">基本所需的熱量: {{ profile.weight * 30 }} kcal</v-col>
-    </v-row>
-    <v-btn icon="mdi-pencil" color="#495F41" @click="openDialog"></v-btn>
-    </div>
+      <div class="d-flex text-center mx-auto" style="max-width: 1000px; margin-top: 50px;">
+        <v-row >
+        <v-avatar size="200" style="border: 1px solid black; margin-top: 10px;" color="#89BE99"><v-img :src="profile.avatar"></v-img></v-avatar>
+      </v-row>
+      <v-row>
+        <v-col cols="8" style="font-size: 20px;">帳號: {{ profile.account }}</v-col>
+        <v-col cols="8" style="font-size: 20px;">信箱: {{ profile.email }}</v-col>
+        <v-col cols="8" style="font-size: 20px;">體重: {{ profile.weight }} 公斤</v-col>
+        <v-col cols="8" style="font-size: 20px;">基本所需的熱量: {{ profile.weight * 30 }} kcal</v-col>
+      </v-row>
+      <v-btn icon="mdi-pencil" color="#495F41" @click="openDialog()"></v-btn>
+      </div>
+
 
   </v-container>
   <v-dialog v-model="dialog.open" persistent  max-width="600">
@@ -31,9 +32,10 @@
           disabled
         ></v-text-field>
         <v-text-field
-          v-model="tempProfile.weight"
+          v-model="weight.value"
           label="體重"
           type="number"
+          :error-messages="weight.meta.errors"
         ></v-text-field>
         </v-card-text>
         <v-card-actions>
@@ -67,7 +69,8 @@ const getProfile = async () => {
     const { data } = await apiAuth.get('/user/profile')
     console.log(data.result)
     profile.value = data.result
-    tempProfile.value = {...data.result}
+    tempProfile.value = { ...data.result }
+
   } catch (error) {
     console.log(error)
     createSnackbar({
@@ -108,7 +111,7 @@ const schema = yup.object({
 })
 const { handleSubmit, isSubmitting } = useForm({
   validationSchema: schema,
-  initialValues: { weight: profile.value.weight }
+  initialValues: { weight: 0 }
 })
 const weight = useField('weight')
 
@@ -116,15 +119,14 @@ const weight = useField('weight')
 const submit = handleSubmit(async (values) => {
   console.log('Submit triggered', values)
   try {
-    isSubmitting.value = true
-
     const fd = new FormData()
-
     fd.append('weight', values.weight)
 
     await apiAuth.patch('/user/edit', fd)
 
+    console.log(tempProfile.value.weight)
     profile.value.weight = values.weight
+    getProfile()
     createSnackbar({
       text: '編輯成功',
       snackbarProps: {
