@@ -32,11 +32,20 @@
           disabled
         ></v-text-field>
         <v-text-field
-          v-model="weight.value"
+          v-model="weight.value.value"
           label="體重"
           type="number"
           :error-messages="weight.meta.errors"
         ></v-text-field>
+        <vue-file-agent
+          ref="fileAgent"
+          v-model="fileRecords" v-model:raw-model-value="rawFileRecords"
+          accept="image/jpeg,image/png"
+          deletable
+          max-size="1MB"
+          :help-text="'點擊或拖曳檔案至此'"
+          :error-text="{type: '檔案類型錯誤', size: '檔案大小超過限制'}"
+        ></vue-file-agent>
         </v-card-text>
         <v-card-actions>
           <v-btn @click="closeDialog">取消</v-btn>
@@ -100,6 +109,7 @@ const openDialog = () => {
 
 const closeDialog = () => {
   dialog.value.open = false
+  fileAgent.value.deleteFileRecord()
 }
 
 const schema = yup.object({
@@ -115,12 +125,22 @@ const { handleSubmit, isSubmitting } = useForm({
 })
 const weight = useField('weight')
 
+const fileAgent = ref([null])
+const fileRecords = ref([])
+const rawFileRecords = ref([])
+
 
 const submit = handleSubmit(async (values) => {
   console.log('Submit triggered', values)
+
+  if (fileRecords.value[0]?.error) return
   try {
     const fd = new FormData()
     fd.append('weight', values.weight)
+
+    if (fileRecords.value.length > 0) {
+      fd.append('image', fileRecords.value[0].file)
+    }
 
     await apiAuth.patch('/user/edit', fd)
 
