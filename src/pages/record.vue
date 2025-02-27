@@ -119,6 +119,6 @@ const series = ref([
 
 <route lang="yaml">
 meta:
-  login: false
+  login: true
   title: '飲食紀錄'
 </route>
