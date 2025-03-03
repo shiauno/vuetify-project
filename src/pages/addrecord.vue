@@ -22,11 +22,13 @@
           <v-card-title>新增飲食紀錄</v-card-title>
           <v-card-text>
             <v-text-field
-
             label="食物名稱"
+            
             ></v-text-field>
             <v-text-field
             label="份數"
+            type="number"
+            min="0"
             ></v-text-field>
             <v-select
             :items="timeOptions"

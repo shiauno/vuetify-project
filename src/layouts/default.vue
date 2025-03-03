@@ -9,7 +9,7 @@
         <v-btn v-if="nav.show" :to="nav.to" :prepend-icon="nav.icon" >{{ nav.text }}</v-btn>
       </template>
       <v-avatar v-if="user.isLoggedIn" style="border: 1px solid black; margin-right: 10px;"><v-img :src="user.avatar"></v-img></v-avatar>
-      <v-btn v-if="user.isLoggedIn" prepend-icon="mdi-logout" :to="!isLoggedIn ? '/' : undefined" @click="logout">登出</v-btn>
+      <v-btn v-if="user.isLoggedIn" prepend-icon="mdi-logout" @click="logout">登出</v-btn>
     </v-container>
   </v-app-bar>
   <v-main style="background-color: #DCF0F5; color: black;">
@@ -35,9 +35,11 @@ import { computed, ref } from 'vue';
 import { useUserStore } from '@/stores/user';
 import { useAxios } from '@/composables/axios';
 import { useSnackbar } from 'vuetify-use-dialog';
+import { useRouter } from 'vue-router';
 
 const user = useUserStore()
 const { apiAuth } = useAxios()
+const router = useRouter()
 const createSnackbar = useSnackbar()
 
 const navs = computed(() => {
@@ -69,6 +71,7 @@ const logout = async () => {
       color: 'green'
     }
   })
+  router.push('/')
 }
 
 const icons = ref(
