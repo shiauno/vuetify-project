@@ -58,6 +58,7 @@ import FoodCard from '@/components/Foodcard.vue';
 import { useForm, useField } from 'vee-validate';
 import * as yup from 'yup'
 import { useSnackbar } from 'vuetify-use-dialog';
+import router from '@/router';
 
 
 const { apiAuth } = useAxios()
@@ -108,7 +109,6 @@ const closeDialog = () => {
 
 watch(() => dialog.value.food, (newFood) => {
   foodName.value = newFood ? newFood.name : ''
-  console.log('確定真的有開嗎', dialog.value.open)
   console.log('新選中的食物:', newFood)
   console.log('foodName:', foodName.value)
 })
@@ -139,9 +139,8 @@ const schema = yup.object({
 const { handleSubmit, isSubmitting } = useForm({
   validationSchema: schema,
   initialValues: {
-    food: '',
     quantity: 1,
-    time: '早上'
+    time: '早餐'
   }
 })
 const quantity = useField('quantity')
@@ -155,10 +154,13 @@ const submit = handleSubmit(async (values) => {
     fd.append('quantity', values.quantity)
     fd.append('time', values.time)
 
+    for (let pair of fd.entries()) {
+      console.log(pair[0] + ': ' + pair[1])
+    }
     const { data } = await apiAuth.post('/record', fd)
     console.log(data.result)
     closeDialog()
-
+    router.push('./record')
     createSnackbar({
       text: '飲食紀錄新增成功',
       snackbarProps: {

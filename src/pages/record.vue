@@ -98,15 +98,23 @@ import { VDateInput } from 'vuetify/labs/components';
 const { apiAuth } = useAxios()
 const date = ref(new Date())
 const today = new Date()
+const localToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0); // 設置為當地時區的零時
+
 
 const recordB =ref([])
 const recordL =ref([])
 const recordD =ref([])
 
+
 const allowedDates = (val) => {
-  const selectedDate = new Date(val)
-  return selectedDate <= today
+  const selectedDate = new Date(val);
+  selectedDate.setHours(0, 0, 0, 0) // 確保選擇的日期設置為當地時區的午夜
+  console.log('allow的今天:', today.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }));
+  return selectedDate <= localToday
 }
+
+console.log('allow的今天:', today.toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' }));
+
 
 const startOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 1))
 
