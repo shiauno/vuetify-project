@@ -13,9 +13,10 @@
     >
     </v-carousel-item>
   </v-carousel>
-  <v-container  max-width="1600">
+  <v-container  max-width="1600" class="text-center" style="margin-top: 100px;">
     <!-- <v-img src="https://cdn.blog.health2sync.com/wp-content/uploads/2021/07/23151655/j7irES8.png.webp" width="700" class="img"></v-img> -->
-
+    <h1>歡迎來到食兼管理</h1>
+    <p>在這裡，您可以查詢食物的熱量和營養成分，記錄您的飲食，並管理個人飲食目標。</p>
   </v-container>
 </template>
 

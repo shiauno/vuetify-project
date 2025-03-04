@@ -6,9 +6,9 @@
       </v-col>
       <v-divider></v-divider>
       <v-col cols="12">
-        <v-data-table :items="foods" :headers="headers" :search="search">
+        <v-data-table :items="foods" :headers="headers" :search="search" style="background-color: #495f41;">
           <template #top>
-            <v-toolbar>
+            <v-toolbar style="background-color: #495f41;">
               <v-btn @click="openDialog(null)">新增商品</v-btn>
               <v-spacer></v-spacer>
               <v-text-field v-model="search" prepend-inner-icon="mdi-magnify" variant="underlined" max-width="400"></v-text-field>
@@ -25,6 +25,9 @@
           </template>
           <template #[`item.edit`]="{ item }">
             <v-btn icon="mdi-pencil" variant="text" @click="openDialog(item)"></v-btn>
+          </template>
+          <template #[`item.deleteFood`]="{ item }">
+            <v-btn icon="mdi-delete" variant="text" @click="deleteFood(item._id)"></v-btn>
           </template>
         </v-data-table>
       </v-col>
@@ -143,6 +146,7 @@ const headers =[
     { title: '新增時間', key: 'createdAt', sortable: true },
     { title: '更新時間', key: 'updatedAt', sortable: true},
     { title: '編輯食物', key: 'edit', sortable: false},
+    { title: '刪除食物', key: 'deleteFood', sortable: false},
 ]
 
 const getFoods = async () => {
@@ -347,8 +351,35 @@ const submit = handleSubmit(async (values) => {
     closeDialog()
   } catch (error) {
     console.log(error)
+    createSnackbar({
+      text: error?.response?.data?.message || '編輯失敗，請稍後再試',
+      snackbarProps: {
+        color: 'red'
+      }
+    })
   }
 })
+
+const deleteFood = async () => {
+  try {
+    await apiAuth.delete('/food/${id}')
+    getFoods()
+    createSnackbar({
+      text: '食物刪除成功',
+      snackbarProps: {
+        color: 'success'
+      }
+    })
+  } catch (error) {
+    console.log(error)
+    createSnackbar({
+      text: '食物刪除失敗',
+      snackbarProps: {
+        color: 'red'
+      }
+    })
+  }
+}
 
 </script>
 

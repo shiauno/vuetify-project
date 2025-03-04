@@ -46,7 +46,7 @@ const navs = computed(() => {
   return [
     { to: '/login', text: '登入', icon: 'mdi-login',show: !user.isLoggedIn},
     { to: '/register', text: '註冊', icon: 'mdi-account-plus', show: !user.isLoggedIn },
-    { to: '/admin', text: '管理', icon: 'mdi-cog', show: user.isLoggedIn && user.isAdmin }
+    { to: '/admin/foods', text: '管理', icon: 'mdi-cog', show: user.isLoggedIn && user.isAdmin }
   ]
 })
 

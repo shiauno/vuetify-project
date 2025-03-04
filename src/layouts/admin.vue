@@ -8,7 +8,7 @@
       <v-list-item v-for="nav in navs" :key="nav.to" :prepend-icon="nav.icon" :title="nav.text" :to="nav.to"></v-list-item>
     </v-list>
   </v-navigation-drawer>
-  <v-main>
+  <v-main style="background-color: #DCF0F5; color: black;">
     <router-view></router-view>
   </v-main>
 </template>
