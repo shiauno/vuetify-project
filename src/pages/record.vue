@@ -36,6 +36,9 @@
             <template #[`item.name`]="{ item }">
               {{ item.foodDetails ? item.foodDetails.name : '' }}
             </template>
+            <template #[`item.deleteRecord`]="{ item }">
+            <v-btn icon="mdi-delete" variant="text" @click="deleteRecord(item._id)"></v-btn>
+            </template>
         </v-data-table-virtual>
         </v-expansion-panel-text>
       </v-expansion-panel>
@@ -55,6 +58,9 @@
             <template #[`item.name`]="{ item }">
               {{ item.foodDetails ? item.foodDetails.name : '' }}
             </template>
+            <template #[`item.deleteRecord`]="{ item }">
+              <v-btn icon="mdi-delete" variant="text" @click="deleteRecord(item._id)"></v-btn>
+            </template>
         </v-data-table-virtual>
         </v-expansion-panel-text>
       </v-expansion-panel>
@@ -73,6 +79,9 @@
             </template>
             <template #[`item.name`]="{ item }">
               {{ item.foodDetails ? item.foodDetails.name : '' }}
+            </template>
+            <template #[`item.deleteRecord`]="{ item }">
+              <v-btn icon="mdi-delete" variant="text" @click="deleteRecord(item._id)"></v-btn>
             </template>
           </v-data-table-virtual>
 
@@ -94,16 +103,20 @@
 import { ref,watch } from 'vue'
 import { useAxios } from '@/composables/axios';
 import { VDateInput } from 'vuetify/labs/components';
+import { useSnackbar } from 'vuetify-use-dialog';
+
 
 const { apiAuth } = useAxios()
 const date = ref(new Date())
 const today = new Date()
 const localToday = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 0, 0, 0); // 設置為當地時區的零時
+const createSnackbar = useSnackbar()
 
 
-const recordB =ref([])
-const recordL =ref([])
-const recordD =ref([])
+
+const recordB = ref([])
+const recordL = ref([])
+const recordD = ref([])
 
 
 const allowedDates = (val) => {
@@ -129,6 +142,7 @@ const headers = [
   { title: '食物名稱', key: 'name', sortable: false },
   { title: '熱量', key: 'calorie', sortable: false },
   { title: '份量', key: 'quantity', sortable: false },
+  { title: '刪除', key: 'deleteRecord', sortable: false}
 ]
 
 const convertDate = (dateString) => {
@@ -155,12 +169,12 @@ const chartOptions = ref({
 const series = ref([
   {
     name: "今日攝取的熱量",
-    data: [18, 40, 35, 50, 49],
+    data: [2746, 2410, 2620, 2500, 3000],
     type: 'bar',
     color: '#495F41'
   }, {
     name: '基本所需熱量',
-    data: [50, 50, 50, 50, 50, 50, 50],
+    data: [2610, 2610, 2610, 2640, 2640],
     type: 'line',
     color: 'red'
   }
@@ -205,6 +219,30 @@ const getDinner = async (selectedDate) => {
   }
 }
 getDinner(date.value);
+
+const deleteRecord = async (recordId) => {
+  try {
+    await apiAuth.delete(`/record/${recordId}`)
+    createSnackbar({
+      text: '食物刪除成功',
+      snackbarProps: {
+        color: 'success'
+      }
+    })
+    getBreak(date.value);
+    getLunch(date.value);
+    getDinner(date.value);
+
+  } catch (error) {
+    console.log(error)
+    createSnackbar({
+      text: '食物紀錄失敗',
+      snackbarProps: {
+        color: 'red'
+      }
+    })
+  }
+}
 
 // 監視日期變化並調用 getBreak 函數
 watch(date, (newDate) => {

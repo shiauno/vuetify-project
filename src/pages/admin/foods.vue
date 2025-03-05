@@ -360,16 +360,17 @@ const submit = handleSubmit(async (values) => {
   }
 })
 
-const deleteFood = async () => {
+const deleteFood = async (foodId) => {
   try {
-    await apiAuth.delete('/food/${id}')
-    getFoods()
+    await apiAuth.delete(`/food/${foodId}`)
     createSnackbar({
       text: '食物刪除成功',
       snackbarProps: {
         color: 'success'
       }
     })
+    foods.splice(0, foods.length)
+    getFoods()
   } catch (error) {
     console.log(error)
     createSnackbar({

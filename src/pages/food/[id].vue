@@ -9,7 +9,7 @@
         <v-img :src="food.image"></v-img>
       </v-col>
 
-      <v-col cols="12" md="7" class="d-flex flex-wrap">
+      <v-col cols="12" md="7" class="d-flex flex-wrap justify-center">
         <div style="width: 960px; font-size: 30px;">分類: {{ food.category }}</div>
         <v-sheet color="#89BE99" :height="200" :width="200" class="d-flex justify-center align-center rounded-lg mx-4 my-4" style="font-size: 35px;" >
           <div>熱量<br> {{ food.calorie }} kcal</div>
